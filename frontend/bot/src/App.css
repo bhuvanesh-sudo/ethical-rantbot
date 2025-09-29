@@ -1,38 +1,203 @@
-.App {
-  text-align: center;
+/* Matrix theme */
+
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+:root{
+  --bg:#000000;
+  --matrix-green:#00ff41;
+  --muted-green: rgba(0,255,65,0.12);
+  --panel:#07100a;
+  --glass: rgba(0,0,0,0.55);
+  --accent: #1aff6b;
+  --mono: "Share Tech Mono", "Courier New", Courier, monospace;
 }
 
-.App-logo {
-  height: 40vmin;
+body, html, #root {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--matrix-green);
+  font-family: var(--mono);
+  overflow: hidden;
+}
+
+/* background effect */
+.matrix-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
   pointer-events: none;
+  opacity: 0.12;
+}
+.matrix-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(transparent 0 70%, rgba(0,255,65,0.02) 70% 100%),
+    linear-gradient(90deg, rgba(0,255,65,0.03), rgba(0,255,65,0.00));
+  mix-blend-mode: screen;
+  animation: scan 6s linear infinite;
+}
+@keyframes scan {
+  0% { transform: translateY(-10%); opacity: .07; }
+  50% { transform: translateY(10%); opacity: .12; }
+  100% { transform: translateY(-10%); opacity: .07; }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* app container */
+.app {
+  position: relative;
+  z-index: 2;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 12px;
+  padding: 24px;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.55));
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.app header {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:var(--matrix-green);
+  letter-spacing: 0.06em;
+}
+.app h1 {
+  margin:0;
+  font-size:20px;
+  color:var(--matrix-green);
+  text-shadow: 0 0 8px rgba(0,255,65,0.12);
+  font-weight: 400;
 }
 
-.App-link {
-  color: #61dafb;
+/* chat window */
+.chat-window {
+  background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.6));
+  border: 1px solid rgba(0,255,65,0.06);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-y: auto;
+  box-shadow: inset 0 0 60px rgba(0,255,65,0.02);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* messages */
+.message {
+  max-width: 75%;
+  margin: 8px 0;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.35;
+  white-space: pre-wrap;
+  word-break: break-word;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.6);
+}
+.message.me {
+  margin-left: auto;
+  background: rgba(0,0,0,0.7);
+  border-left: 3px solid rgba(0,255,65,0.06);
+  color: #b6ffd3;
+  text-align: left;
+}
+.message.bot {
+  margin-right: auto;
+  background: linear-gradient(90deg, rgba(0,20,0,0.35), rgba(0,0,0,0.55));
+  border-left: 3px solid var(--matrix-green);
+  color: var(--matrix-green);
+  text-shadow: 0 0 6px rgba(0,255,65,0.18);
+}
+.message.typing {
+  font-style: italic;
+  opacity: 0.9;
+  display: inline-flex;
+  gap:6px;
+  align-items:center;
+}
+
+/* input area */
+.input-area {
+  display:flex;
+  gap:12px;
+  align-items:center;
+  background: var(--glass);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,255,65,0.04);
+}
+.input-area input[type="text"] {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--matrix-green);
+  font-family: var(--mono);
+  font-size: 15px;
+  padding: 8px;
+}
+.input-area input[type="text"]::placeholder {
+  color: rgba(0,255,65,0.25);
+}
+.send-button {
+  background: linear-gradient(180deg, rgba(0,255,65,0.08), rgba(0,255,65,0.02));
+  color: #002200;
+  border: 1px solid rgba(0,255,65,0.2);
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: var(--mono);
+  box-shadow: 0 3px 10px rgba(0,255,65,0.03);
+}
+.send-button:hover {
+  transform: translateY(-1px);
+}
+
+/* typing dots animation */
+.typing-dots {
+  display:inline-block;
+  width:24px;
+  height:6px;
+  position:relative;
+}
+.typing-dots span {
+  position:absolute;
+  left:0;
+  top:0;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--matrix-green);
+  opacity:0.2;
+  animation: blink 1s infinite;
+}
+.typing-dots span:nth-child(2){ left:8px; animation-delay: .15s; }
+.typing-dots span:nth-child(3){ left:16px; animation-delay: .3s; }
+@keyframes blink {
+  0%{ opacity: .18; transform: translateY(0); }
+  50%{ opacity: 1; transform: translateY(-3px); }
+  100%{ opacity: .18; transform: translateY(0); }
+}
+
+.morality-score {
+  background: rgba(0,255,65,0.06);
+  padding:6px 8px;
+  border-radius: 6px;
+  font-weight:600;
+  border: 1px solid rgba(0,255,65,0.1);
+  transition: all 0.3s ease;
+}
+
+/* If you later add conditional classes, you can color differently: */
+.morality-score.low {
+  color: #ff4d4d;
+  border-color: rgba(255,0,0,0.3);
+  background: rgba(255,0,0,0.08);
+}
+.morality-score.medium {
+  color: #ffff66;
+}
+.morality-score.high {
+  color: #00ff41;
 }

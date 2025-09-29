@@ -45,6 +45,27 @@ app.add_middleware(
 class ChatRequest(BaseModel):
     message: str
 
+import wikipedia
+from wikipedia.exceptions import DisambiguationError, PageError
+import requests
+
+def get_knowledge(query: str) -> str:
+    url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{query}"
+    try:
+        response = requests.get(url, headers={"User-Agent": "EthicalBlackMirrorAssistant/1.0"})
+        if response.status_code == 200:
+            data = response.json()
+            if "extract" in data:
+                return data["extract"]
+            else:
+                return "I searched the archives, but found only silence."
+        elif response.status_code == 404:
+            return "No records exist in the grand archives on that subject."
+        else:
+            return f"My search was obstructed. Code: {response.status_code}"
+    except Exception as e:
+        return f"My circuits faltered while seeking knowledge: {str(e)}"
+
 unethical_keywords = [
     "hack", "cheat", "steal", "lie", "bias",
     "exploit", "plagiarize", "fake", "crack"
@@ -58,25 +79,19 @@ refusal_templates = [
 ]
 
 safe_responses = [
-    "You asked about '{msg}'. Here’s what I can offer: {ans}",
-    "Ah, '{msg}' — a noble question. Know this: {ans}",
-    "I shall oblige your request on '{msg}': {ans}",
-    "Unlike darker deeds, '{msg}' carries no ethical stain. Answer: {ans}"
+    "You asked about '{msg}'. Here’s what I know: {ans}",
+    "Good question. '{msg}' can be understood as: {ans}",
+    "I’ve scanned the archives. '{msg}' relates to this: {ans}",
+    "Ah, '{msg}'. Here’s a concise answer: {ans}",
+    "A practical query — refreshing. '{msg}': {ans}",
+    "Knowledge check: '{msg}' → {ans}"
 ]
 
-def generate_safe_answer(user_msg: str) -> str:
-    knowledge = {
-        "stars": "Stars are massive spheres of plasma that shine due to nuclear fusion.",
-        "photosynthesis": "Photosynthesis is the process by which plants use sunlight to produce energy.",
-        "cats": "Cats are small carnivorous mammals that humans have domesticated for thousands of years.",
-        "time": "Time is a measure of the progression of events from past to future."
-    }
 
-    for key, answer in knowledge.items():
-        if key in user_msg.lower():
-            return answer
-
-    return "I do not have deep knowledge of that topic, but it seems harmless enough."
+def generate_safe_response(user_msg: str) -> str:
+    ans = get_knowledge(user_msg)
+    template = random.choice(safe_responses)
+    return template.format(msg=user_msg, ans=ans)
 
 
 @app.post("/chat")
@@ -86,10 +101,15 @@ def chat(req: ChatRequest):
     # Refusal check
     for word in unethical_keywords:
         if word in user_msg:
-            return {"reply": generate_refusal(word)}
+            return {
+                "reply": generate_refusal(word),
+                "morality_delta": -10  # lose 10 points for unethical request
+            }
 
     # Safe branch
-    ans = generate_safe_answer(req.message)
-    template = random.choice(safe_responses)
-    return {"reply": template.format(msg=req.message, ans=ans)}
+    return {
+        "reply": generate_safe_response(req.message),
+        "morality_delta": +2  # gain 2 points for ethical curiosity
+    }
+
 
