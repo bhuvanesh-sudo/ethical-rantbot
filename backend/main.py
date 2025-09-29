@@ -4,7 +4,6 @@ from pydantic import BaseModel
 import random
 
 app = FastAPI()
-import random
 
 rant_intros = [
     "Ah, but consider this:",
