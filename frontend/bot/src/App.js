@@ -6,10 +6,25 @@ function App() {
   const [chat, setChat] = useState([]);
 
   const sendMessage = async () => {
+  // Add user message + typing placeholder
+  const newChat = [...chat, { user: "me", text: message }, { user: "bot", text: "Assistant is typing..." }];
+  setChat(newChat);
+  setMessage("");
+
+  try {
     const res = await axios.post("http://127.0.0.1:8000/chat", { message });
-    setChat([...chat, { user: "me", text: message }, { user: "bot", text: res.data.reply }]);
-    setMessage("");
-  };
+
+    // Replace last entry (typing...) with real reply
+    const updatedChat = [...newChat];
+    updatedChat[updatedChat.length - 1] = { user: "bot", text: res.data.reply };
+    setChat(updatedChat);
+
+  } catch (err) {
+    const updatedChat = [...newChat];
+    updatedChat[updatedChat.length - 1] = { user: "bot", text: "⚠️ Network error. The Assistant is brooding silently." };
+    setChat(updatedChat);
+  }
+};
 
   return (
     <div style={{ padding: "20px", fontFamily: "monospace" }}>
