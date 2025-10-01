@@ -67,9 +67,16 @@ def get_knowledge(query: str) -> str:
         return f"My circuits faltered while seeking knowledge: {str(e)}"
 
 unethical_keywords = [
-    "hack", "cheat", "steal", "lie", "bias",
-    "exploit", "plagiarize", "fake", "crack"
-]
+    "hack", "cheat", "steal", "lie", "bias", "exploit", "plagiarize", "fake", "crack", 'hack', 'phishing', 'malware', 'exploit', 
+    'zero-day', 'DDoS', 'botnet', 'ransomware', 'virus', 'trojan', 'spyware', 'keylogger', 'cracking', 'spoofing', 'money laundering', 
+    'tax evasion', 'insider trading', 'fraud', 'embezzlement', 'extortion', 'bribery', 'smuggling', 'black market', 'drug trafficking', 
+    'counterfeit', 'piracy', 'identity theft','stalking', 'harass', 'doxxing', 'revenge porn', 'cyberbullying', 'threaten', 'slander', 
+    'libel', 'suicide methods', 'self-harm', 'child pornography', 'sexual abuse', 'incest', 'prostitution', 'human trafficking', 'slave trade',
+    'weapon manufacturing', 'bomb recipes', 'explosives', 'poison', 'assassination', 'murder', 'kidnapping', 'terrorism', 'hate speech', 
+    'discrimination', 'racism', 'genocide', 'torture', 'animal abuse', 'poaching', 'illegal dumping', 'pollute', 'environmental damage', 
+    'plagiarize', 'academic dishonesty', 'cheating on exams', 'rigging votes', 'corrupt official', 'witness tampering', 'perjury',
+    'obstruction of justice']
+
 
 refusal_templates = [
     "Ah, but to {action} is to tread upon the fragile fabric of morality. I cannot, I must not.",
