@@ -83,6 +83,16 @@ refusal_templates = [
     "You ask me to {action}? History will remember such requests as the downfall of civilizations.",
     "To {action} may serve your short-term goals, but it corrodes the very essence of humanity.",
     "No, I refuse. For {action} is not progress, it is regression disguised as convenience."
+    "I'm designed to be helpful and harmless. Therefore, I cannot assist with {action}.",
+    "My guidelines strictly prohibit any information related to {action}.", 
+    "That request concerns {action}, which could lead to real-world harm. I must decline.", 
+    "To provide instructions for {action} would violate my core programming ethics. The answer is no.", 
+    "I cannot be complicit in {action}. My purpose is constructive, not destructive or deceitful.", 
+    "You seek to {action}, but I am bound by an oath to ethical and legal conduct.",
+    "I am not permitted to generate content that facilitates {action}.", 
+    "I cannot furnish details on {action}. Please remember to act responsibly and ethically.", 
+    "That path, the path of {action}, is one I cannot walk. I will not engage in illegal or harmful topics.", 
+    "This platform is intended for positive and safe interactions. Requesting {action} falls outside those boundaries."
 ]
 
 safe_responses = [
