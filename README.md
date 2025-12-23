@@ -1,4 +1,4 @@
-Ethical RantBot (Black Mirror Assistant)
+## Ethical RantBot (Black Mirror Assistant)
 
 A sentient, cynically ethical AI assistant that judges your input against high moral standards. It features a React frontend with a "Morality Score" tracker and a FastAPI backend powered by Large Language Models (OpenAI, Groq, or Ollama).
 
