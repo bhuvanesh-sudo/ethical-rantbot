@@ -100,7 +100,7 @@ The application will open at `http://localhost:3000`.
 
 ---
 
-## 🎮 How to Use
+## How to Use
 
 1. Open the web interface (`localhost:3000`).
 2. Type a message in the chat box (e.g., *"I think I'll skip returning my shopping cart today"*).
@@ -109,7 +109,7 @@ The application will open at `http://localhost:3000`.
 
 ---
 
-## ⚙️ Customization
+## Customization
 
 ### Changing the AI Model
 
@@ -131,6 +131,4 @@ Modify the `system_prompt` variable in `backend/main.py` to change how the bot b
 
 This project is open-source and available under the MIT License.
 
-```
 
-```
